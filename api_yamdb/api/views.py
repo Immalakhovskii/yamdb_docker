@@ -10,14 +10,14 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 
 from api.mixins import ListCreateDestroyViewSet
-from  reviews.models import Category, Genre, Title, Review, User
+from reviews.models import Category, Genre, Title, Review, User
 from .serializers import (
     CategorySerializer, GenreSerializer,
     TitleSerializer, ReviewSerializer,
     CommentSerializer, UserEditSerializer,
     UserSerializer, RegisterDataSerializer,
     TokenSerializer, ReadOnlyTitleSerializer
-    )
+)
 from api.filters import TitlesFilter
 from api.permissions import (
     IsAdminOrReadOnly, IsAdminModeratorOwnerOrReadOnly, IsAdmin
@@ -105,6 +105,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
         title = get_object_or_404(Title, pk=title_id)
         user = self.request.user
         serializer.save(author=user, title=title)
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
