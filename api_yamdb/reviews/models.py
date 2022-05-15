@@ -1,4 +1,25 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils import six
+
+class User(AbstractUser):
+    ADMIN = 'A'
+    MODERATOR = 'M'
+    USER = 'U'
+    USER_ROLES = (
+        (ADMIN, 'admin'),
+        (MODERATOR, 'moderator'),
+        (USER, 'user'),
+    )
+    role = models.CharField(
+        max_length=1, 
+        choices=USER_ROLES, 
+        default=USER
+    )
+    bio = models.TextField(
+        'Биография',
+        blank=True,
+    )
 
 
 class Category(models.Model):
