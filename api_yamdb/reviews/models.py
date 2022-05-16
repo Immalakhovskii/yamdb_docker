@@ -164,21 +164,26 @@ class Review(models.Model):
 class Comment(models.Model):
     review = models.ForeignKey(
         Review,
+        verbose_name='Отзыв',
         on_delete=models.CASCADE,
-        related_name='comments',
-        verbose_name='Отзыв'
+        related_name='comments'
     )
-    text = models.TextField(null=False)
+    text = models.TextField(
+        verbose_name='Текст',
+    )
     author = models.ForeignKey(
         User,
+        verbose_name='Пользователь',
         on_delete=models.CASCADE,
-        related_name='comments',
-        verbose_name='Автор комментария'
+        related_name='comments'
     )
     pub_date = models.DateTimeField(
+        verbose_name='Дата публикации',
         auto_now_add=True,
-        verbose_name='Дата публикации'
+        db_index=True
     )
 
-    def __str__(self):
-        return self.text
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+        ordering = ['pub_date']
