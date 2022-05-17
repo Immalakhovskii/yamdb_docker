@@ -14,14 +14,8 @@ class User(AbstractUser):
     ]
 
     email = models.EmailField(
-        verbose_name='Адрес электронной почты',
+        verbose_name='Электронная почта',
         unique=True,
-    )
-    username = models.CharField(
-        verbose_name='Имя пользователя',
-        max_length=150,
-        null=True,
-        unique=True
     )
     role = models.CharField(
         verbose_name='Роль',
@@ -45,18 +39,6 @@ class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
-
-    class Meta:
-        ordering = ['id']
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-
-        constraints = [
-            models.CheckConstraint(
-                check=~models.Q(username__iexact="me"),
-                name="username_is_not_me"
-            )
-        ]
 
 
 class Category(models.Model):
@@ -164,26 +146,21 @@ class Review(models.Model):
 class Comment(models.Model):
     review = models.ForeignKey(
         Review,
-        verbose_name='Отзыв',
         on_delete=models.CASCADE,
-        related_name='comments'
+        related_name='comments',
+        verbose_name='Отзыв'
     )
-    text = models.TextField(
-        verbose_name='Текст',
-    )
+    text = models.TextField(null=False)
     author = models.ForeignKey(
         User,
-        verbose_name='Пользователь',
         on_delete=models.CASCADE,
-        related_name='comments'
+        related_name='comments',
+        verbose_name='Автор комментария'
     )
     pub_date = models.DateTimeField(
-        verbose_name='Дата публикации',
         auto_now_add=True,
-        db_index=True
+        verbose_name='Дата публикации'
     )
 
-    class Meta:
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Комментарии'
-        ordering = ['pub_date']
+    def __str__(self):
+        return self.text
