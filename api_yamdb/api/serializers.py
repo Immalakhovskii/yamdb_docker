@@ -17,24 +17,23 @@ class ReviewSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    class Meta:
+        model = Review
+        fields = '__all__'
+
     def validate(self, data):
         request = self.context['request']
         author = request.user
         title_id = self.context['view'].kwargs.get('title_id')
         title = get_object_or_404(Title, pk=title_id)
-        if request.method == 'POST':
+        if request.method == ('POST' or 'PUT' or 'PATCH'):
             if Review.objects.filter(title=title, author=author).exists():
-                raise ValidationError('Вы не можете добавить более'
+                raise ValidationError('Вы не можете добавить более '
                                       'одного отзыва на произведение')
         return data
 
-    class Meta:
-        model = Review
-        fields = '__all__'
-
 
 class CategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
         exclude = ('id',)
@@ -45,7 +44,6 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class GenreSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Genre
         exclude = ('id',)
@@ -82,6 +80,21 @@ class ReadOnlyTitleSerializer(serializers.ModelSerializer):
         )
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    review = serializers.SlugRelatedField(
+        slug_field='text',
+        read_only=True
+    )
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         validators=[
@@ -116,6 +129,10 @@ class RegisterDataSerializer(serializers.ModelSerializer):
         ]
     )
 
+    class Meta:
+        fields = ('username', 'email')
+        model = User
+
     def validate(self, data):
         if data['username'] == 'me':
             raise serializers.ValidationError(
@@ -123,26 +140,7 @@ class RegisterDataSerializer(serializers.ModelSerializer):
             )
         return data
 
-    class Meta:
-        fields = ('username', 'email')
-        model = User
-
 
 class TokenSerializer(serializers.Serializer):
     username = serializers.CharField()
     confirmation_code = serializers.CharField()
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    review = serializers.SlugRelatedField(
-        slug_field='text',
-        read_only=True
-    )
-    author = serializers.SlugRelatedField(
-        slug_field='username',
-        read_only=True
-    )
-
-    class Meta:
-        model = Comment
-        fields = '__all__'
