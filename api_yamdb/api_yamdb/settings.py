@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django_filters',
     'api',
     'reviews',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -83,7 +84,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'reviews.User'
+AUTH_USER_MODEL = 'users.User'
 
 
 LANGUAGE_CODE = 'ru-ru'
