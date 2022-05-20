@@ -114,7 +114,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
 
 
-class UserEditSerializer(serializers.ModelSerializer):
+class UserEditSerializer(UserSerializer):
     class Meta:
         fields = ('username', 'email', 'first_name',
                   'last_name', 'bio', 'role')
@@ -122,7 +122,7 @@ class UserEditSerializer(serializers.ModelSerializer):
         model = User
 
 
-class RegisterDataSerializer(serializers.ModelSerializer):
+class RegisterDataSerializer(UserSerializer):
     username = serializers.CharField(
         validators=[
             UniqueValidator(queryset=User.objects.all())

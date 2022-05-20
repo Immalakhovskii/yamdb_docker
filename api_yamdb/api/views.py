@@ -41,21 +41,12 @@ class UserViewSet(viewsets.ModelViewSet):
         permission_classes=[permissions.IsAuthenticated],
         serializer_class=UserEditSerializer,
     )
-    def users_own_profile(self, request):
-        user = request.user
-        if request.method == "GET":
-            serializer = self.get_serializer(user)
-            return Response(serializer.data)
-        if request.method == "PATCH":
-            serializer = self.get_serializer(
-                user,
-                data=request.data,
-                partial=True
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    def set_profile(self, request, pk=None):
+        user = get_object_or_404(User, pk=request.user.id)
+        serializer = self.get_serializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CategoryViewSet(ListCreateDestroyViewSet):
