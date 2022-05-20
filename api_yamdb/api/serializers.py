@@ -114,7 +114,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
 
 
-class UserEditSerializer(UserSerializer):
+class UserEditSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('username', 'email', 'first_name',
                   'last_name', 'bio', 'role')
@@ -122,23 +122,29 @@ class UserEditSerializer(UserSerializer):
         model = User
 
 
-class RegisterDataSerializer(UserSerializer):
+class RegisterDataSerializer(serializers.Serializer):
     username = serializers.CharField(
         validators=[
             UniqueValidator(queryset=User.objects.all())
-        ]
+        ],
+        required=True,
+    )
+    email = serializers.EmailField(
+        validators=[
+            UniqueValidator(queryset=User.objects.all())
+        ],
+        required=True,
     )
 
-    class Meta:
-        fields = ('username', 'email')
-        model = User
-
-    def validate(self, data):
-        if data['username'] == 'me':
+    def validate_username(self, username):
+        if username == 'me':
             raise serializers.ValidationError(
                 'Нельзя использовать me как username'
             )
-        return data
+        return username
+
+    def create(self, validated_data):
+        return User.objects.create(**validated_data)
 
 
 class TokenSerializer(serializers.Serializer):
