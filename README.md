@@ -35,4 +35,5 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
+
 Проект запущен и доступен по адресу [localhost:8000](http://localhost:8000/).
