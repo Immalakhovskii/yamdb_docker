@@ -146,10 +146,5 @@ dmypy.json
 .mypy_cache
 
 # папки со статикой и медиа
-media/
-
-# Файл с запросами REST_client
-REST_client_requests.http
-
-# dump.py
-dump.py
+static/
+posts/static/
