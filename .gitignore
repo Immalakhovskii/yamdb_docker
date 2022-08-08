@@ -148,3 +148,6 @@ dmypy.json
 # папки со статикой и медиа
 static/
 posts/static/
+
+# REST_client requests
+REST_client_requests.http
