@@ -10,9 +10,14 @@ services:
   web:
     build: ../api_yamdb
     restart: always
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+             python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
     volumes:
      - static_value:/app/static/
-     - media_value:/app/media/ 
+     - media_value:/app/media/
     depends_on:
       - db
     env_file:
