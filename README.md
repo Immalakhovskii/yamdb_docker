@@ -4,7 +4,7 @@
 API YaMDb collects score and reviews on different titles in different categories and genres. Categories and genres are customizable. Also there is an option to add comments to reviews. In this project API YaMDb starts via Docker
 
 #### Technology Stack ####
-Python 3.7 / Django 2.2.16 / Django REST framework 3.12.4 / Docker 20.10.17 / PostgeSQL 13.0
+Python 3.7 / Django 2.2.16 / Django REST framework 3.12.4 / Docker 20.10.17 / PostgreSQL 13.0
 
 #### How to start API YaMDb locally via Docker ####
 ```
