@@ -17,7 +17,7 @@ cd infra_sp2/infra
 # create and activate Docker containers
 docker-compose up -d --build
 
-# create superuser in case you want immediate access to admin site
+# create superuser in case you need access to admin site
 docker-compose exec web python manage.py createsuperuser    
 ```
 Now admin site of the project available at http://localhost/admin/, API requests also can be performed by address starting with http://localhost/api/v1/ (see full list of available requests in ReDoc documentation)

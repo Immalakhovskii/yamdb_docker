@@ -7,8 +7,8 @@ services:
     env_file:
       - .env
   
-  web:
-    build: ../api_yamdb
+  web: 
+    image: sky4p/web_yamdb:v1
     restart: always
     command: >
       sh -c "python manage.py collectstatic --noinput &&
