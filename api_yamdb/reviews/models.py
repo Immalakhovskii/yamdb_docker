@@ -6,11 +6,11 @@ from users.models import User
 
 class Category(models.Model):
     name = models.CharField(
-        verbose_name='Категория',
+        verbose_name='Category name',
         max_length=256
     )
     slug = models.SlugField(
-        verbose_name='Слаг',
+        verbose_name='Category slug',
         max_length=50,
         unique=True
     )
@@ -19,18 +19,18 @@ class Category(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
         ordering = ['name']
 
 
 class Genre(models.Model):
     name = models.CharField(
-        verbose_name='Жанр',
+        verbose_name='Genre name',
         max_length=256
     )
     slug = models.SlugField(
-        verbose_name='Слаг',
+        verbose_name='Genre slug',
         max_length=50,
         unique=True
     )
@@ -39,26 +39,33 @@ class Genre(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Жанр'
-        verbose_name_plural = 'Жанры'
+        verbose_name = 'Genre'
+        verbose_name_plural = 'Genres'
         ordering = ['name']
 
 
 class Title(models.Model):
-    name = models.CharField(max_length=256, verbose_name='Название')
-    year = models.IntegerField(verbose_name='Год выпуска')
-    description = models.TextField(verbose_name='Описание')
+    name = models.CharField(
+        max_length=256,
+        verbose_name='Title name'
+    )
+    year = models.IntegerField(
+        verbose_name='Publication year'
+    )
+    description = models.TextField(
+        verbose_name='Title description'
+    )
     genre = models.ManyToManyField(
         Genre,
         blank=True,
-        verbose_name='Slug жанра'
+        verbose_name='Genre slug'
     )
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-        verbose_name='Slug категории'
+        verbose_name=' Category slug'
     )
 
     def __str__(self):
@@ -68,35 +75,35 @@ class Title(models.Model):
 class Review(models.Model):
     title = models.ForeignKey(
         Title,
-        verbose_name='Произведение',
+        verbose_name='Title',
         on_delete=models.CASCADE,
         related_name='reviews'
     )
     text = models.TextField(
-        verbose_name='Текст',
+        verbose_name='Review text',
     )
     author = models.ForeignKey(
         User,
-        verbose_name='Автор',
+        verbose_name='Author',
         on_delete=models.CASCADE,
         related_name='reviews'
     )
     score = models.PositiveSmallIntegerField(
-        verbose_name='Рейтинг',
+        verbose_name='Rating',
         validators=[
-            MinValueValidator(1, 'Допустимы значения от 1 до 10'),
-            MaxValueValidator(10, 'Допустимы значения от 1 до 10')
+            MinValueValidator(1, 'Score must be from 1 to 10'),
+            MaxValueValidator(10, 'Score must be from 1 to 10')
         ]
     )
     pub_date = models.DateTimeField(
-        verbose_name='Дата публикации',
+        verbose_name='Publication date',
         auto_now_add=True,
         db_index=True
     )
 
     class Meta:
-        verbose_name = 'Отзыв'
-        verbose_name_plural = 'Отзывы'
+        verbose_name = 'Review'
+        verbose_name_plural = 'Reviews'
         ordering = ['pub_date']
         constraints = [
             models.UniqueConstraint(
@@ -111,18 +118,18 @@ class Comment(models.Model):
         Review,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Отзыв'
+        verbose_name='Comment'
     )
     text = models.TextField(null=False)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='Автор комментария'
+        verbose_name='Comment author'
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,
-        verbose_name='Дата публикации'
+        verbose_name='Publication date'
     )
 
     def __str__(self):

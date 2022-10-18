@@ -13,17 +13,17 @@ class User(AbstractUser):
     ]
 
     email = models.EmailField(
-        verbose_name='Электронная почта',
+        verbose_name='Email',
         unique=True,
     )
     role = models.CharField(
-        verbose_name='Роль',
+        verbose_name='Role',
         max_length=50,
         choices=ROLES,
         default=USER
     )
     bio = models.TextField(
-        verbose_name='О себе',
+        verbose_name='Bio',
         null=True,
         blank=True
     )

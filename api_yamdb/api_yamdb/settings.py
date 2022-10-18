@@ -119,3 +119,5 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+FIXTURE_DIRS = (os.path.join(BASE_DIR, 'data'),)

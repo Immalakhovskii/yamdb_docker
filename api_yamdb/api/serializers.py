@@ -28,8 +28,9 @@ class ReviewSerializer(serializers.ModelSerializer):
         title = get_object_or_404(Title, pk=title_id)
         if request.method == ('POST' or 'PUT' or 'PATCH'):
             if Review.objects.filter(title=title, author=author).exists():
-                raise ValidationError('Вы не можете добавить более '
-                                      'одного отзыва на произведение')
+                raise ValidationError(
+                    'User can post only one review per title'
+                )
         return data
 
 
@@ -139,7 +140,7 @@ class RegisterDataSerializer(serializers.Serializer):
     def validate_username(self, username):
         if username == 'me':
             raise serializers.ValidationError(
-                'Нельзя использовать me как username'
+                'Cannot use me as username'
             )
         return username
 
