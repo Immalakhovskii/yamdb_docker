@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   
   db:
@@ -8,7 +10,7 @@ services:
       - .env
   
   web: 
-    image: sky4p/web_yamdb:latest
+    build: ../api_yamdb
     restart: always
     command: >
       sh -c "python manage.py collectstatic --noinput &&
